@@ -21,6 +21,13 @@ pipeline {
                 sh 'mvn compile'
             }
         }
+	
+	 stage('Maven Test') {
+            steps {
+                // This step executes the Maven test
+                sh 'mvn test'
+            }
+        }
 
         stage('SonarQube Analysis') {
             steps {

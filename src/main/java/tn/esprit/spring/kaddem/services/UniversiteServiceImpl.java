@@ -7,6 +7,7 @@ import tn.esprit.spring.kaddem.entities.Universite;
 import tn.esprit.spring.kaddem.repositories.DepartementRepository;
 import tn.esprit.spring.kaddem.repositories.UniversiteRepository;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -48,6 +49,13 @@ return  u;
 
     public Set<Departement> retrieveDepartementsByUniversite(Integer idUniversite){
 Universite u=universiteRepository.findById(idUniversite).orElse(null);
-return u.getDepartements();
+        // Check if the Universite object is null (i.e., not found in the repository)
+        if (u == null) {
+            // If it's null, you can return an empty set to indicate no departments were found.
+            return new HashSet<>();
+        }
+
+        // If the Universite object is not null, return its departments.
+        return u.getDepartements();
     }
 }
