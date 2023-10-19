@@ -23,6 +23,13 @@ pipeline {
             }
         }
 
+stage('SonarQube Analysis') {
+            steps {
+                sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=admin26 -Dsonar.host.url=http://192.168.0.14:9000/"
+               
+
+            }
+        }
        
 
         // Ajoutez vos autres stages ici
