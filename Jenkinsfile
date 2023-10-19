@@ -1,17 +1,31 @@
+
 pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('GIT') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: 'yesmineDevops']], userRemoteConfigs: [[url: 'https://github.com/NaouresTahri/kaddem.git']])                
+                git url: 'https://github.com/NaouresTahri/kaddem.git', branch: 'yesmineDevops'
             }
         }
 
-        stage('Clean and Build') {
+        stage('Maven Clean') {
             steps {
-                sh 'mvn clean compile'
+                // Cette étape exécute la commande Maven clean
+                sh 'mvn clean'
             }
         }
+
+        stage('Maven Compile') {
+            steps {
+                // Cette étape exécute la commande Maven compile
+                sh 'mvn compile'
+            }
+        }
+
+       
+
+        // Ajoutez vos autres stages ici
     }
 }
+ 
