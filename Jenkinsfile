@@ -29,6 +29,12 @@ pipeline {
 
             }
         }
+	stage('Nexus') {
+            steps {
+                // maven deploy with skiping tests
+                sh 'mvn deploy -DskipTests'
+            }
+        }
 
     }
 }
