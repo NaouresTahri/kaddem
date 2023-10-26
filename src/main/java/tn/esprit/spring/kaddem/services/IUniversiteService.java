@@ -9,9 +9,9 @@ import java.util.Set;
 public interface IUniversiteService {
    public List<Universite> retrieveAllUniversites();
 
-    Universite addUniversite (Universite  u);
+    Universite addUniversite (Universite u);
 
-    Universite updateUniversite (Universite  u);
+    Universite updateUniversite (Universite u);
 
     Universite retrieveUniversite (Integer idUniversite);
 

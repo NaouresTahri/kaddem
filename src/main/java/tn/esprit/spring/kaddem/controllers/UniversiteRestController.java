@@ -19,8 +19,8 @@ public class UniversiteRestController {
 	// http://localhost:8089/Kaddem/universite/retrieve-all-universites
 	@GetMapping("/retrieve-all-universites")
 	public List<Universite> getUniversites() {
-		List<Universite> listUniversites = universiteService.retrieveAllUniversites();
-		return listUniversites;
+		List<Universite> listUniversities = universiteService.retrieveAllUniversites();
+		return listUniversities;
 	}
 	// http://localhost:8089/Kaddem/universite/retrieve-universite/8
 	@GetMapping("/retrieve-universite/{universite-id}")

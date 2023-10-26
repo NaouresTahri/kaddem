@@ -24,12 +24,18 @@ public class UniversiteServiceImpl implements IUniversiteService{
 return (List<Universite>) universiteRepository.findAll();
     }
 
- public    Universite addUniversite (Universite  u){
-return  (universiteRepository.save(u));
+ public Universite addUniversite (Universite u){
+     if (u == null) {
+         throw new IllegalArgumentException("Universite cannot be null");
+     }return  (universiteRepository.save(u));
     }
 
- public    Universite updateUniversite (Universite  u){
-     return  (universiteRepository.save(u));
+ public Universite updateUniversite (Universite u){
+        if (u == null) {
+     throw new IllegalArgumentException("Universite cannot be null");
+ }
+
+        return  (universiteRepository.save(u));
     }
 
   public Universite retrieveUniversite (Integer idUniversite){

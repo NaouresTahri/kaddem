@@ -1,0 +1,35 @@
+version: '2.3.3'
+
+services:
+  kaddem:  # Adjusted service name here
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: kaddem
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 0000
+      MYSQL_ROOT_PASSWORD: 0000
+    volumes:
+      - kaddem-data:/var/lib/mysql
+    networks:
+      - kaddem-network
+    ports:
+      - "3306:3306"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  kaddem-app:
+    image: kaddem-app
+    ports:
+      - "8089:8089"
+    networks:
+      - kaddem-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://kaddem:3306/kaddem?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    depends_on:
+      - kaddem  # Adjusted dependency name here
+
+networks:
+  kaddem-network:
+    driver: bridge
+
+volumes:
+  kaddem-data:
