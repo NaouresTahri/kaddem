@@ -14,19 +14,14 @@ stage('Mvn Clean'){
             } 
         }
 
-         stages {
+ stages {
         stage('GIT') {
             steps {
                 git url: 'https://github.com/NaouresTahri/kaddem.git', branch: 'yesmineDevops'
             }
         }
-
-stage('SonarQube Analysis') {
-            steps {
-                sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=yesmine26 -Dsonar.host.url=http://192.168.0.14:9000/"
-               
-
+        stage('compile sonarqube'){
+            steps{
+                sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=yesmine26"
             }
         }
-
-        
