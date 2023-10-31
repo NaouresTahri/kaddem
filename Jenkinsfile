@@ -1,28 +1,37 @@
+pipeline {
+    agent any
 
- stages {
-stage('Mvn Clean'){
+    stages {
+        stage('GIT') {
             steps {
+                git url: 'https://github.com/NaouresTahri/kaddem.git', branch: 'yesmineDevops'
+            }
+        }
+
+        stage('Maven Clean') {
+            steps {
+                // Cette étape exécute la commande Maven clean
                 sh 'mvn clean'
             }
         }
-        stage('Mvn Compile'){
+
+        stage('Maven Compile') {
             steps {
+                // Cette étape exécute la commande Maven compile
                 sh 'mvn compile'
             }
         }
+
         stage('Maven Unit Tests') {
             steps {
                sh 'mvn clean  test '
             } 
         }
 
-        stage('GIT') {
+stage('SonarQube Analysis') {
             steps {
-                git url: 'https://github.com/NaouresTahri/kaddem.git', branch: 'yesmineDevops'
-            }
-        }
-        stage('compile sonarqube'){
-            steps{
-                sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=yesmine26"
+                sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=yesmine26 -Dsonar.host.url=http://192.168.0.14:9000/"
+               
+
             }
         }
