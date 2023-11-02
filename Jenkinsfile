@@ -40,6 +40,7 @@ pipeline {
     
         stage('Build App Image') {
                 steps {
+                    sh 'cp /app/kaddem/target/kaddem-0.0.1-SNAPSHOT.jar .'
                     // Build the Docker image with the name that matches your docker-compose file
                     sh 'docker build -t kaddem-app-image:latest .'
                 }
