@@ -38,25 +38,33 @@ pipeline {
      
 
     
-        stage('Build and Deploy Docker Im BackAPP') {
-            steps {
-                // Building the Docker image using the Dockerfile in your project directory
-                sh 'docker build -t naourestahri/kaddem-backend:latest .'
-                
-                // Login to DockerHub using manual credentials
-                sh 'docker login -u naoures.tahri@esprit.tn -p Allah123.A.' // Replace with your actual password
-                
-                // Pushing the image to DockerHub
-                sh 'docker push naourestahri/kaddem-backend:latest'
+        stage('Build App Image') {
+                steps {
+                    // Build the Docker image with the name that matches your docker-compose file
+                    sh 'docker build -t kaddem-app-image:latest .'
+                }
             }
-        }
+
+            stage('Deploy App Image in  DockerHub') {
+                steps {
+                    // Tag the image for DockerHub
+                    sh 'docker tag kaddem-app-image:latest naourestahri/kaddem-app-image:latest'
+
+                    // Login to DockerHub using your credentials (directly as you mentioned)
+                    sh 'docker login -u naourestahri -p Allah123.A.' // Replace with your actual username and password
+
+                    // Push the image to DockerHub
+                    sh 'docker push naourestahri/kaddem-app-image:latest'
+                }
+            }
+
     
-	stage('Docker Compose Up') {
+	    stage('Docker Compose Up') {
             steps {
+                // Run docker-compose up from the directory containing the docker-compose.yml
                 sh 'docker compose up -d'
             }
         }
-
 
     }
 }

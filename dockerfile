@@ -1,18 +1,12 @@
-# Stage 1: Download the jar from Nexus
-FROM alpine:3.13 as downloader
-
-RUN apk --no-cache add wget
-
-WORKDIR /download
-
-RUN wget "http://192.168.33.10:8081/repository/maven-snapshots/tn/esprit/spring/kaddem/0.0.1-SNAPSHOT/kaddem-0.0.1-20231026.201839-5.jar"
-
-# Stage 2: Run the Java application
+# Use the Java Runtime Environment (JRE) image to run the Java application
 FROM openjdk:11-jre-slim
 
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy the `.jar` file from the downloader stage
-COPY --from=downloader /download/kaddem-0.0.1-20231026.201839-5.jar /app
+# Copy the jar file from the VM's synced folder to the container's app directory
+COPY /app/kaddem/kaddem-0.0.1-SNAPSHOT.jar /app/kaddem.jar
 
-CMD ["java", "-jar", "/app/kaddem-0.0.1-20231026.195733-4.jar"]
+# Command to run when the container starts
+CMD ["java", "-jar", "/app/kaddem.jar"]
+
