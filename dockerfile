@@ -5,7 +5,7 @@ FROM openjdk:11-jre-slim
 WORKDIR /app
 
 # Copy the jar file from the VM's synced folder to the container's app directory
-COPY kaddem-0.0.1-SNAPSHOT.jar /app/kaddem.jar
+COPY /target/kaddem-0.0.1-SNAPSHOT.jar /app/kaddem.jar
 
 
 # Command to run when the container starts

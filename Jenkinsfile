@@ -21,6 +21,12 @@ pipeline {
                 sh 'mvn test'
             }
         }
+     stage('Maven Package') {
+            steps {
+                        // Run the maven package command
+                        sh 'mvn clean package'
+            }
+         }
 
         stage('SONARQUBE') {
             steps {
@@ -61,7 +67,7 @@ pipeline {
 	    stage('Docker Compose Up') {
             steps {
                 // Run docker-compose up from the directory containing the docker-compose.yml
-                sh 'docker compose docker-compose.yml up -d'
+                sh 'docker compose  up -d'
             }
         }
 
