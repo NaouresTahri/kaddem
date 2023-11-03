@@ -1,7 +1,7 @@
 version: '2.3.3'
 services:
   kaddem-app:
-    image: kaddem-app-image
+    image: naourestahri/kaddem-app-image:latest
     ports:
       - "8089:8089"
     environment:
