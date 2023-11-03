@@ -61,7 +61,7 @@ pipeline {
 	    stage('Docker Compose Up') {
             steps {
                 // Run docker-compose up from the directory containing the docker-compose.yml
-                sh 'docker compose up -d'
+                sh 'docker compose docker-compose.yml up -d'
             }
         }
 
