@@ -3,9 +3,19 @@ package tn.esprit.spring.kaddem.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.core.annotation.Order;
+import tn.esprit.spring.kaddem.repositories.EquipeRepository;
+import tn.esprit.spring.kaddem.services.EquipeServiceImpl;
+
 
 @Entity
 public class Equipe implements Serializable{
@@ -94,4 +104,6 @@ public class Equipe implements Serializable{
         this.niveau = niveau;
     }
 
-}
+
+};
+
