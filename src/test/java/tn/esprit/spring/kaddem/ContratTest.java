@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ContratTest {
-
     @Test
     public void testCreateContrat() {
         Date startDate = new Date();
