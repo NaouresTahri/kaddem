@@ -6,7 +6,7 @@ pipeline {
             steps {
                 git branch :'yesmineDevops',
                 // Get some code from a GitHub repository
-                url : 'https://github.com/NaouresTahri/kaddem.git'
+                url : 'git@github.com:NaouresTahri/kaddem.git'
                 credentialsId : '1234'
             }
         }
