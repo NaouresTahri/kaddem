@@ -4,7 +4,9 @@ pipeline {
     stages {
         stage('GIT') {
             steps {
-                git url: 'https://github.com/NaouresTahri/kaddem.git', branch: 'yesmineDevops'
+                git branch :'yesmineDevops',
+                // Get some code from a GitHub repository
+                url : 'https://github.com/NaouresTahri/kaddem.git'
             }
         }
 
