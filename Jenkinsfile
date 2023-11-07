@@ -46,19 +46,17 @@ pipeline {
             steps {
                 // No need to copy the JAR file, Docker build will handle it
                 // Build the Docker image with the specific tag
-                sh 'docker build -t naourestahri/kaddem-app-image:${APP_VERSION} .'
+                sh 'docker build -t naourestahri/kaddem-app-image:0.0.1-SNAPSHOT .'
             }
         }
-         environment {
-                    APP_VERSION = '0.0.1-SNAPSHOT'
-                }
+
         stage('Deploy App Image in DockerHub') {
             steps {
                 // Login to DockerHub
                 sh 'docker login -u naourestahri -p Allah123.A.'
 
                 // Push the image to DockerHub with the specific version
-                sh 'docker push naourestahri/kaddem-app-image:${APP_VERSION}'
+                sh 'docker push naourestahri/kaddem-app-image:0.0.1-SNAPSHOT'
             }
         }
     
