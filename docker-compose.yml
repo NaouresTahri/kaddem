@@ -1,18 +1,7 @@
-version: '2.3.3'
+version: '3.3'
 services:
-  kaddem-app:
-    image: naourestahri/kaddem-app-image:latest
-    ports:
-      - "8089:8089"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://kaddem-db:3306/kaddem?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
-    depends_on:
-      - kaddem-db
-
   kaddem-db:
-    image: mysql:latest
+    image: mysql:5.7
     environment:
       MYSQL_DATABASE: kaddem
       MYSQL_USER: root
@@ -20,4 +9,26 @@ services:
       MYSQL_ROOT_PASSWORD:
     ports:
       - "3306:3306"
+    volumes:
+      - kaddem-db-data:/var/lib/mysql  # Persist database data
+
+  kaddem-app:
+    depends_on:
+      - kaddem-db
+    image: naourestahri/kaddem-app-image:0.0.1-SNAPSHOT
+    ports:
+      - "8089:8089"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://kaddem-db:3306/kaddem?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+    volumes:
+    - kaddem-app-logs:/path/to/logs  # Replace with the actual path where the app stores logs
+
+volumes:
+  kaddem-db-data:  # This will create a named volume to store database data
+  kaddem-app-logs:  # This will create a named volume for app logs
+
+
+
 

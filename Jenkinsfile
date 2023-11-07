@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    environment {
+            APP_VERSION = '0.0.1-SNAPSHOT'
+        }
     stages {
         stage('GIT') {
             steps {
@@ -41,28 +43,24 @@ pipeline {
                 sh 'mvn deploy -DskipTests'
             }
         }
-	
-	 stage('Build App Image') {
-                steps {
-                    sh 'cp /app/kaddem/target/kaddem-0.0.1-SNAPSHOT.jar .'
-                    // Build the Docker image with the name that matches your docker-compose file
-                    sh 'docker build -t kaddem-app-image:latest .'
-                }
+
+        stage('Build App Image') {
+            steps {
+                // No need to copy the JAR file, Docker build will handle it
+                // Build the Docker image with the specific tag
+                sh 'docker build -t naourestahri/kaddem-app-image:${APP_VERSION} .'
             }
+        }
 
-            stage('Deploy App Image in  DockerHub') {
-                steps {
-                    // Tag the image for DockerHub
-                    sh 'docker tag kaddem-app-image:latest naourestahri/kaddem-app-image:latest'
+        stage('Deploy App Image in DockerHub') {
+            steps {
+                // Login to DockerHub
+                sh 'docker login -u naourestahri -p Allah123.A.'
 
-                    // Login to DockerHub using your credentials (directly as you mentioned)
-                    sh 'docker login -u naourestahri -p Allah123.A.' // Replace with your actual username and password
-
-                    // Push the image to DockerHub
-                    sh 'docker push naourestahri/kaddem-app-image:latest'
-                }
+                // Push the image to DockerHub with the specific version
+                sh 'docker push naourestahri/kaddem-app-image:${APP_VERSION}'
             }
-
+        }
     
 	    stage('Docker Compose Up') {
             steps {
