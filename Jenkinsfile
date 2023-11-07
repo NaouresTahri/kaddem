@@ -1,8 +1,6 @@
 pipeline {
     agent any
-    environment {
-            APP_VERSION = '0.0.1-SNAPSHOT'
-        }
+
     stages {
         stage('GIT') {
             steps {
@@ -51,7 +49,9 @@ pipeline {
                 sh 'docker build -t naourestahri/kaddem-app-image:${APP_VERSION} .'
             }
         }
-
+         environment {
+                    APP_VERSION = '0.0.1-SNAPSHOT'
+                }
         stage('Deploy App Image in DockerHub') {
             steps {
                 // Login to DockerHub
