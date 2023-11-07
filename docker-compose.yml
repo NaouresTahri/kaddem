@@ -1,0 +1,12 @@
+version: '2'
+services:
+  sonarqube:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+      - "9092:9092"
+
+  nexus:
+    image: sonatype/nexus3
+    ports:
+      - "8081:8081"
