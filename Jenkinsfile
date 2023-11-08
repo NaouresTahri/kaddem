@@ -70,15 +70,12 @@ pipeline {
 
         stage('Docker Compose Up') {
             steps {
-                dir('/app/kaddem') {
                     // Pull the latest images
                     sh 'docker compose pull'
                     // Start up the application
                     sh 'docker compose up -d'
-                }
             }
         }
-
 
 
     }
