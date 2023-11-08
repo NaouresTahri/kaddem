@@ -16,7 +16,7 @@ pipeline {
     stages {
         stage('GIT') {
             steps {
-                git url: 'https://github.com/NaouresTahri/kaddem.git', branch: 'main'
+                git url: 'https://github.com/NaouresTahri/kaddem.git', branch: 'NaouresTahri'
             }
         }
 
@@ -56,7 +56,7 @@ pipeline {
             }
         }
 
-        stage('Push to DockerHub') {
+        stage('deploy to DockerHub') {
             steps {
                 sh "echo 'Logging in to Docker Hub'"
                 sh "docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD}"
@@ -64,7 +64,7 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Docker compose') {
             steps {
                 sh 'docker-compose -f docker-compose.yml up -d'
             }
