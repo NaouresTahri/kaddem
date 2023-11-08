@@ -1,83 +1,74 @@
 pipeline {
     agent any
 
+    environment {
+        // Define the Docker image name as an environment variable
+        DOCKER_IMAGE = 'naourestahri/kaddem-app-image:0.0.1-SNAPSHOT'
+        // Define the credentials directly as environment variables (not recommended)
+        DOCKER_USERNAME = 'naourestahri'
+        DOCKER_PASSWORD = 'Allah123.A.'
+        SONAR_LOGIN = 'admin'
+        SONAR_PASSWORD = 'Allah123.A.'
+        // Define the SonarQube server URL
+        SONAR_HOST_URL = 'http://192.168.33.10:9000/'
+    }
+
     stages {
         stage('GIT') {
             steps {
-                git url: 'https://github.com/NaouresTahri/kaddem.git', branch: 'NaouresTahri'
+                git url: 'https://github.com/NaouresTahri/kaddem.git', branch: 'main'
             }
         }
-      
-	 stage ('COMPILING'){
-		steps {
-		sh 'mvn clean compile'
 
-	    }		
-	}
-	
-	 stage('JUNIT/MOCHITO') {
+        stage ('COMPILING') {
             steps {
-                
+                sh 'mvn clean compile'
+            }
+        }
+
+        stage('JUNIT/MOCHITO') {
+            steps {
                 sh 'mvn test'
             }
         }
-     stage('Maven Package') {
+
+        stage('Maven Package') {
             steps {
-                        // Run the maven package command
-                        sh 'mvn clean package'
+                sh 'mvn clean package'
             }
-         }
+        }
 
         stage('SONARQUBE') {
             steps {
-                sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=Allah123.A. -Dsonar.host.url=http://192.168.33.10:9000/"
-               
-
+                sh "mvn sonar:sonar -Dsonar.login=${env.SONAR_LOGIN} -Dsonar.password=${env.SONAR_PASSWORD} -Dsonar.host.url=${env.SONAR_HOST_URL}"
             }
         }
-	stage('Nexus') {
+
+        stage('Nexus') {
             steps {
-                // maven deploy with skiping tests
                 sh 'mvn deploy -DskipTests'
             }
         }
 
-        stage('Build App Image') {
+        stage('Build Docker Image') {
             steps {
-                // No need to copy the JAR file, Docker build will handle it
-                // Build the Docker image with the specific tag
-                sh 'docker build -t naourestahri/kaddem-app-image:0.0.1-SNAPSHOT .'
+                sh "docker build -t ${env.DOCKER_IMAGE} ."
             }
         }
 
-        stage('Deploy App Image in DockerHub') {
+        stage('Push to DockerHub') {
             steps {
-                // Login to DockerHub
-                sh 'docker login -u naourestahri -p Allah123.A.'
-
-                // Push the image to DockerHub with the specific version
-                sh 'docker push naourestahri/kaddem-app-image:0.0.1-SNAPSHOT'
+                sh "echo 'Logging in to Docker Hub'"
+                sh "docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD}"
+                sh "docker push ${env.DOCKER_IMAGE}"
             }
         }
 
-
-        stage('Check Environment') {
+        stage('Deploy') {
             steps {
-                sh 'pwd'
-                sh 'ls -la /app/kaddem'
+                sh 'docker-compose -f docker-compose.yml up -d'
             }
         }
-
-        stage('Docker Compose Up') {
-            steps {
-                    // Pull the latest images
-                    sh 'docker compose pull'
-                    // Start up the application
-                    sh 'docker compose up -d'
-            }
-        }
-
-
     }
 }
- 
+

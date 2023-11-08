@@ -1,16 +1,16 @@
-version: '3.3'
+version: '3.8'
 services:
   kaddem-db:
     image: mysql:5.7
     environment:
-      MYSQL_DATABASE: kaddem
-      MYSQL_USER: root
-      MYSQL_PASSWORD:
-      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE: 'kaddem'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD:  # Replace with your actual password
+      MYSQL_ROOT_PASSWORD:  # Replace with your actual root password
     ports:
       - "3306:3306"
     volumes:
-      - kaddem-db-data:/var/lib/mysql  # Persist database data
+      - kaddem-db-data:/var/lib/mysql
 
   kaddem-app:
     depends_on:
@@ -18,23 +18,20 @@ services:
     image: naourestahri/kaddem-app-image:0.0.1-SNAPSHOT
     ports:
       - "8089:8089"
-    #environment:
-     # - SPRING_DATASOURCE_URL=jdbc:mysql://kaddem-db:3306/kaddem?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-      #- SPRING_DATASOURCE_USERNAME=root
-      #- SPRING_DATASOURCE_PASSWORD=
     environment:
-      SPRING_APPLICATION_JSON: '{
-            "spring.datasource.url"  : "jdbc:mysql://kaddem-db:3306/kaddem?useSSL=false",
-            "spring.datasource.username" : "root",
-            "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
-            "spring.jpa.hibernate.ddl-auto" : "update"
-          }'
+      - SERVER_SERVLET_CONTEXT_PATH=/kaddem
+      - SPRING_DATASOURCE_URL=jdbc:mysql://kaddem-db:3306/kaddem?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD= # Use the same MYSQL_PASSWORD as above
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5Dialect
     volumes:
-    - kaddem-app-logs:/path/to/logs  # Replace with the actual path where the app stores logs
+      - kaddem-app-logs:/app/logs
 
 volumes:
-  kaddem-db-data:  # This will create a named volume to store database data
-  kaddem-app-logs:  # This will create a named volume for app logs
+  kaddem-db-data:
+  kaddem-app-logs:
 
 
 
