@@ -16,7 +16,7 @@ pipeline {
     stages {
         stage('GIT') {
             steps {
-                git url: 'https://github.com/NaouresTahri/kaddem.git', branch: 'NaouresTahri'
+                git url: 'https://github.com/NaouresTahri/kaddem', branch: 'NaouresTahri'
             }
         }
 
