@@ -72,7 +72,7 @@ pipeline {
         stage('Docker Compose Up') {
             steps {
                 dir('/app/kaddem') {
-                    sh 'docker compose up -d'
+                    sh 'docker compose up -d '
                 }
             }
         }
