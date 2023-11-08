@@ -59,13 +59,24 @@ pipeline {
                 sh 'docker push naourestahri/kaddem-app-image:0.0.1-SNAPSHOT'
             }
         }
-    
-	    stage('Docker Compose Up') {
+
+
+        stage('Check Environment') {
             steps {
-                // Run docker-compose up from the directory containing the docker-compose.yml
-                sh 'docker compose  up -d'
+                sh 'pwd'
+                sh 'ls -la /app/kaddem'
             }
         }
+
+
+        stage('Docker Compose Up') {
+            steps {
+                dir('/app/kaddem') {
+                    sh 'docker-compose up -d'
+                }
+            }
+        }
+
 
     }
 }
