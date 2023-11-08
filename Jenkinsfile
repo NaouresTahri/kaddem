@@ -15,10 +15,10 @@ pipeline {
 
     stages {
         stage('GIT') {
-            steps {
-                git url: 'https://github.com/NaouresTahri/kaddem', branch: 'NaouresTahri'
-            }
-        }
+                    steps {
+                        git url: 'https://github.com/NaouresTahri/kaddem.git', branch: 'NaouresTahri'
+                    }
+                }
 
         stage ('COMPILING') {
             steps {
