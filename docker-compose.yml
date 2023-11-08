@@ -18,10 +18,17 @@ services:
     image: naourestahri/kaddem-app-image:0.0.1-SNAPSHOT
     ports:
       - "8089:8089"
+    #environment:
+     # - SPRING_DATASOURCE_URL=jdbc:mysql://kaddem-db:3306/kaddem?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      #- SPRING_DATASOURCE_USERNAME=root
+      #- SPRING_DATASOURCE_PASSWORD=
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://kaddem-db:3306/kaddem?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      SPRING_APPLICATION_JSON: '{
+            "spring.datasource.url"  : "jdbc:mysql://kaddem-db:3306/kaddem?useSSL=false",
+            "spring.datasource.username" : "root",
+            "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
+            "spring.jpa.hibernate.ddl-auto" : "update"
+          }'
     volumes:
     - kaddem-app-logs:/path/to/logs  # Replace with the actual path where the app stores logs
 
