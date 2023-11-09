@@ -5,8 +5,7 @@ services:
     environment:
       MYSQL_DATABASE: 'kaddem'
       MYSQL_USER: 'root'
-      MYSQL_PASSWORD:  # Replace with your actual password
-      MYSQL_ROOT_PASSWORD:  # Replace with your actual root password
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     ports:
       - "3306:3306"
     volumes:
@@ -19,13 +18,13 @@ services:
     ports:
       - "8089:8089"
     environment:
-      - SERVER_SERVLET_CONTEXT_PATH=/kaddem
-      - SPRING_DATASOURCE_URL=jdbc:mysql://kaddem-db:3306/kaddem?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD= # Use the same MYSQL_PASSWORD as above
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_JPA_SHOW_SQL=true
-      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5Dialect
+      SERVER_SERVLET_CONTEXT_PATH: /kaddem
+      SPRING_DATASOURCE_URL: jdbc:mysql://kaddem-db:3306/kaddem?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD:  # No password required due to MYSQL_ALLOW_EMPTY_PASSWORD
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: true
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL5Dialect
     volumes:
       - kaddem-app-logs:/app/logs
 
