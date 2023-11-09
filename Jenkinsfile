@@ -2,73 +2,66 @@ pipeline {
     agent any
 
     environment {
-        // Define the Docker image name as an environment variable
-        DOCKER_IMAGE = 'naourestahri/kaddem-app-image:0.0.1-SNAPSHOT'
-        // Define the credentials directly as environment variables (not recommended)
-        DOCKER_USERNAME = 'naourestahri'
-        DOCKER_PASSWORD = 'Allah123.A.'
-        SONAR_LOGIN = 'admin'
-        SONAR_PASSWORD = 'Allah123.A.'
-        // Define the SonarQube server URL
-        SONAR_HOST_URL = 'http://192.168.33.10:9000/'
-    }
+            // Define the Docker image name as an environment variable
+            DOCKER_IMAGE = 'naourestahri/kaddem-app-image:0.0.1-SNAPSHOT'
+        }
 
-    stages {
-        stage('GIT') {
-                    steps {
-                        git url: 'https://github.com/NaouresTahri/kaddem.git', branch: 'NaouresTahri'
-                    }
+        stages {
+            stage('GIT') {
+                steps {
+                    git url: 'https://github.com/NaouresTahri/kaddem.git', branch: 'NaouresTahri'
                 }
-
-        stage ('COMPILING') {
-            steps {
-                sh 'mvn clean compile'
             }
-        }
 
-        stage('JUNIT/MOCHITO') {
-            steps {
-                sh 'mvn test'
+            stage ('COMPILING') {
+                steps {
+                    sh 'mvn clean compile'
+                }
             }
-        }
 
-        stage('Maven Package') {
-            steps {
-                sh 'mvn clean package'
+            stage('JUNIT/MOCHITO') {
+                steps {
+                    sh 'mvn test'
+                }
             }
-        }
 
-        stage('SONARQUBE') {
-            steps {
-                sh "mvn sonar:sonar -Dsonar.login=${env.SONAR_LOGIN} -Dsonar.password=${env.SONAR_PASSWORD} -Dsonar.host.url=${env.SONAR_HOST_URL}"
+            stage('Maven Package') {
+                steps {
+                    sh 'mvn clean package'
+                }
             }
-        }
 
-        stage('Nexus') {
-            steps {
-                sh 'mvn deploy -DskipTests'
+            stage('SONARQUBE') {
+                steps {
+                    sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=Allah123.A. -Dsonar.host.url=http://192.168.33.10:9000/"
+                }
             }
-        }
 
-        stage('Build Docker Image') {
-            steps {
-                sh "docker build -t ${env.DOCKER_IMAGE} ."
+            stage('Nexus') {
+                steps {
+                    sh 'mvn deploy -DskipTests'
+                }
             }
-        }
 
-        stage('deploy to DockerHub') {
-            steps {
-                sh "echo 'Logging in to Docker Hub'"
-                sh "docker login -u ${env.DOCKER_USERNAME} -p ${env.DOCKER_PASSWORD}"
-                sh "docker push ${env.DOCKER_IMAGE}"
+            stage('Build Docker Image') {
+                steps {
+                    sh "docker build -t ${env.DOCKER_IMAGE} ."
+                }
             }
-        }
 
-        stage('Docker compose') {
-            steps {
-                sh 'docker-compose -f docker-compose.yml up -d'
+            stage('Deploy to DockerHub') {
+                steps {
+                    sh "echo 'Logging in to Docker Hub'"
+                    sh 'docker login -u naourestahri -p Allah123.A.'
+                    sh "docker push ${env.DOCKER_IMAGE}"
+                }
             }
-        }
+
+            stage('Docker Compose') {
+                steps {
+                    sh 'docker compose -f docker-compose.yml up -d'
+                }
+            }
     }
 }
 
