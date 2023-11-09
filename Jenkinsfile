@@ -39,6 +39,50 @@ stage('SonarQube Analysis') {
             }
         }
 
+
+
+
+
+  stage('Building our image backend') { 
+            steps { 
+                script { 
+                    sh 'docker login -u yesmineeladab -p yesminedocker'
+                    sh 'docker build -t yesmineeladab/kaddem:0.0.1 .'
+                }
+            } 
+        }
+        stage('Deploy our image backend') { 
+            steps { 
+                script {
+                    sh 'docker push yesmineeladab/kaddem:0.0.1'
+                }
+            } 
+        }
+             stage('Building image frontend') { 
+            steps { 
+                script { 
+                    sh 'docker build -t yesmineeladab/kaddemfrontend:0.0.1 -f frontend-kaddem/Dockerfile frontend-kaddem/'
+                }
+            } 
+        }
+        stage('Deploy image frontend') { 
+            steps { 
+                script {
+                    sh 'docker push yesmineeladab/kaddemfrontend:0.0.1'
+                }
+            } 
+        }
+       
+        stage('run docker compose') { 
+            steps { 
+                script { 
+                    sh 'docker-compose --file docker-compose.yml up'
+                }
+
+
+
+
+
 stage('Nexus'){
             steps{
                   script {
