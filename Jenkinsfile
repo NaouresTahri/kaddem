@@ -46,7 +46,7 @@ stage('SonarQube Analysis') {
   stage('Building our image backend') { 
             steps { 
                 script { 
-                    sh 'docker login -u yesmineeladab -p yesminedocker'
+                    sh 'docker login -u yesmineeladab -p yesmine26'
                     sh 'docker build -t yesmineeladab/kaddem:0.0.1 .'
                 }
             } 
