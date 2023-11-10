@@ -1,5 +1,9 @@
 pipeline {
     agent any
+environment {
+            // Define the Docker image name as an environment variable
+            DOCKER_IMAGE = 'yesmineeladab/kaddem-app-image:0.0.1-SNAPSHOT'
+        }
 
     stages {
         stage('GIT') {
@@ -10,6 +14,12 @@ pipeline {
                 credentialsId : '1234'
             }
         }
+
+  stage('JUNIT/MOCHITO') {
+                steps {
+                    sh 'mvn test'
+                }
+            }
 
         stage('Maven Clean') {
             steps {
@@ -43,41 +53,25 @@ stage('SonarQube Analysis') {
 
 
 
-  stage('Building our image backend') { 
-            steps { 
-                script { 
-                    sh 'docker login -u yesmineeladab -p yesmine26'
-                    sh 'docker build -t yesmineeladab/kaddem:0.0.1 .'
+stage('Build Docker Image') {
+                steps {
+                    sh "docker build -t ${env.DOCKER_IMAGE} ."
                 }
-            } 
-        }
-        stage('Deploy our image backend') { 
-            steps { 
-                script {
-                    sh 'docker push yesmineeladab/kaddem:0.0.1'
+            }
+
+            stage('Deploy to DockerHub') {
+                steps {
+                    sh "echo 'Logging in to Docker Hub'"
+                    sh 'docker login -u yesmine993 -p yesmine26'
+                    sh "docker push ${env.DOCKER_IMAGE}"
                 }
-            } 
-        }
-             stage('Building image frontend') { 
-            steps { 
-                script { 
-                    sh 'docker build -t yesmineeladab/kaddemfrontend:0.0.1 -f frontend-kaddem/Dockerfile frontend-kaddem/'
+            }
+
+            stage('Docker Compose') {
+                steps {
+                    sh 'docker compose -f docker-compose.yml up -d'
                 }
-            } 
-        }
-        stage('Deploy image frontend') { 
-            steps { 
-                script {
-                    sh 'docker push yesmineeladab/kaddemfrontend:0.0.1'
-                }
-            } 
-        }
-       
-        stage('run docker compose') { 
-            steps { 
-                script { 
-                    sh 'docker-compose --file docker-compose.yml up'
-                }
+            }
 
 
 
