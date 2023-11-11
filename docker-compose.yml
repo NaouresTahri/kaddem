@@ -6,6 +6,8 @@ services:
       - "8084:8084"
     depends_on:
       - mysql
+    volumes:
+      - app_data:/usr/src/app  -
 
   mysql:
     image: mysql
@@ -18,4 +20,5 @@ services:
       - mysql_data:/var/lib/mysql
 
 volumes:
+  app_data:
   mysql_data:
