@@ -1,5 +1,12 @@
 version: '3'
 services:
+  app:
+    image: nederbg/kaddem:1.0
+    ports:
+      - "8084:8084"
+    depends_on:
+      - mysql
+
   mysql:
     image: mysql
     environment:
@@ -7,10 +14,8 @@ services:
       MYSQL_DATABASE: devops
     ports:
       - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
 
-  app:
-    image: nederbg/kaddem:1.0
-    ports:
-      - "8083:8083"
-    depends_on:
-      - mysql
+volumes:
+  mysql_data:
