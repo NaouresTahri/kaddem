@@ -7,7 +7,7 @@ services:
     depends_on:
       - mysql
     volumes:
-      - app_data:/usr/src/app  -
+      - app_data:/var/lib/app  -
 
   mysql:
     image: mysql
