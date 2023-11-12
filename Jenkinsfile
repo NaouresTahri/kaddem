@@ -56,11 +56,8 @@ pipeline {
             stage('Nexus') {
                 steps {
                     //sh "docker start 64c13a5735d7"
-                    sh '''
-                        mvn deploy -DskipTests \
-                        -Drepository.username=admin -Drepository.password=Allah123.A. \
-                        -DaltDeploymentRepository=nexus::default::http://192.168.33.10:8081/repository/maven-snapshots/
-                    '''
+                    sh "mvn deploy -DskipTests"
+
                 }
             }
 
