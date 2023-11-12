@@ -64,13 +64,17 @@ pipeline {
             }
 
             stage('Start Grafana') {
-                 steps {
-                      sshagent(['vagrant-ssh']) {
-
-                      sh "ssh -p 2222 -o StrictHostKeyChecking=no vagrant@127.0.0.1 'docker start grafana'"
+                        steps {
+                            sshagent(['vagrant-ssh']) {
+                                // Try to start the Grafana container. If it's not running, run it.
+                                sh """
+                                    ssh -p 2222 -o StrictHostKeyChecking=no vagrant@127.0.0.1 '
+                                    docker start grafana || docker run -d --name=grafana --restart=always -p 3000:3000 grafana/grafana
+                                    '
+                                """
                             }
-                 }
-            }
+                        }
+                    }
     }
 }
 
