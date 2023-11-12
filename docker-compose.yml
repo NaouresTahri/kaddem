@@ -9,9 +9,6 @@ services:
       - "3306:3306"
     volumes:
       - kaddem-db-data:/var/lib/mysql
-    networks:
-      - app-network
-
   kaddem-app:
     depends_on:
       - kaddem-db
@@ -28,24 +25,11 @@ services:
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL5Dialect
     volumes:
       - kaddem-app-logs:/app/logs
-    networks:
-      - app-network
-
-  prometheus:
-    image: prom/prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - /home/vagrant/prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      - app-network
 
 volumes:
   kaddem-db-data:
   kaddem-app-logs:
-networks:
-  app-network:
-    driver: bridge
+
 
 
 

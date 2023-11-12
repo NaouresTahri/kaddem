@@ -69,20 +69,20 @@ pipeline {
                 }
             }
 
-            stage('Start Grafana') {
-                        steps {
-                                sshagent(['vagrant-ssh']) {
-                                    sh """
-                                        ssh -p 2222 -o StrictHostKeyChecking=no vagrant@127.0.0.1 '
-                                        docker start grafana || docker run -d --name=grafana \
-                                        -e "GF_SECURITY_ADMIN_USER=admin" \
-                                        -e "GF_SECURITY_ADMIN_PASSWORD=Allah123.A." \
-                                        --restart=always -p 3000:3000 grafana/grafana
-                                        '
-                                    """
-                               }
+            stage('Start Prometheus') {
+                    steps {
+                        script {
+                            sh "docker start 879171b52c20"
                         }
-            }
+                    }
+                }
+            stage('Start Grafana') {
+                    steps {
+                        script {
+                            sh "docker start b94e81e71e2a"
+                        }
+                    }
+                }
 
     }
     post {
