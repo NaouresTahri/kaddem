@@ -41,6 +41,7 @@ pipeline {
                     sh 'docker start sonarqube'
                     sh 'docker start 64c13a5735d7' // nexus
                     // Add commands to start other containers as needed
+                    sh 'sleep 120'
                 }
             }
 
