@@ -36,17 +36,25 @@ pipeline {
                     sh 'mvn clean package'
                 }
             }
+            stage('Start Containers') {
+                steps {
+                    sh 'docker start sonarqube'
+                    sh 'docker start 64c13a5735d7' // nexus
+                    // Add commands to start other containers as needed
+                }
+            }
+
 
             stage('SONARQUBE') {
                 steps {
-                    sh "docker restart sonarqube"
+                    //sh "docker start sonarqube"
                     sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=Allah123.A. -Dsonar.host.url=http://192.168.33.10:9000/"
                 }
             }
 
             stage('Nexus') {
                 steps {
-                    sh "docker restart 64c13a5735d7"
+                    //sh "docker start 64c13a5735d7"
                     sh '''
                         mvn deploy -DskipTests \
                         -Drepository.username=admin -Drepository.password=Allah123.A. \
@@ -78,14 +86,14 @@ pipeline {
             stage(' Prometheus') {
                     steps {
                         script {
-                            sh "docker restart 879171b52c20"
+                            sh "docker start 879171b52c20"
                         }
                     }
                 }
             stage(' Grafana') {
                     steps {
                         script {
-                            sh "docker restart b94e81e71e2a"
+                            sh "docker start b94e81e71e2a"
                         }
                     }
                 }
