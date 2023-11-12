@@ -74,8 +74,7 @@ pipeline {
             stage('Start Prometheus') {
                     steps {
                         script {
-                            sh "docker start 879171b52c20"
-                        }
+                            sh "docker start 879171b52c20" 
                     }
                 }
             stage('Start Grafana') {
