@@ -39,12 +39,14 @@ pipeline {
 
             stage('SONARQUBE') {
                 steps {
+                    sh "docker start sonarqube"
                     sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=Allah123.A. -Dsonar.host.url=http://192.168.33.10:9000/"
                 }
             }
 
             stage('Nexus') {
                 steps {
+                    sh "docker start 64c13a5735d7"
                     sh 'mvn deploy -DskipTests'
                 }
             }
