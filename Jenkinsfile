@@ -84,19 +84,18 @@ pipeline {
                         }
             }
 
-            post {
-                    always {
-                        // This will always run, regardless of the result of the pipeline
-                        jacoco(
-                            execPattern: '**/**.exec',
-                            classPattern: '**/classes',
-                            sourcePattern: '**/src/main/java',
-                            changeBuildStatus: true,
-                            minimumInstructionCoverage: '50'
-                        )
-                    }
-                }
-
     }
+    post {
+                        always {
+                            // This will always run, regardless of the result of the pipeline
+                            jacoco(
+                                execPattern: '**/**.exec',
+                                classPattern: '**/classes',
+                                sourcePattern: '**/src/main/java',
+                                changeBuildStatus: true,
+                                minimumInstructionCoverage: '50'
+                            )
+                        }
+                    }
 }
 
