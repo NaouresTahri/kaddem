@@ -1,32 +1,24 @@
-version: '3.8'
+version: '3'
 services:
-  kaddem-db:
-    image: mysql:5.7
+  app:
+    image: yesmineeladab/kaddem:1.0
+    ports:
+      - "8084:8084"
+    depends_on:
+      - mysql
+    volumes:
+      - app_data:/var/lib/app  -
+
+  mysql:
+    image: mysql
     environment:
-      MYSQL_DATABASE: 'kaddem'
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ROOT_PASSWORD: yesmine26
+      MYSQL_DATABASE: yesmine993
     ports:
       - "3306:3306"
     volumes:
-      - kaddem-db-data:/var/lib/mysql
-
-  kaddem-app:
-    depends_on:
-      - kaddem-db
-    image: yesmineeladab/kaddem-app-image:0.0.1-SNAPSHOT
-    ports:
-      - "8089:8089"
-    environment:
-      SERVER_SERVLET_CONTEXT_PATH: /kaddem
-      SPRING_DATASOURCE_URL: jdbc:mysql://kaddem-db:3306/kaddem?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD:  # No password required due to MYSQL_ALLOW_EMPTY_PASSWORD
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_JPA_SHOW_SQL: true
-      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL5Dialect
-    volumes:
-      - kaddem-app-logs:/app/logs
+      - mysql_data:/var/lib/mysql
 
 volumes:
-  kaddem-db-data:
-  kaddem-app-logs:
+  app_data:
+  mysql_data:
