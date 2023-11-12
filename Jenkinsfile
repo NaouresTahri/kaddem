@@ -47,7 +47,11 @@ pipeline {
             stage('Nexus') {
                 steps {
                     sh "docker start 64c13a5735d7"
-                    sh 'mvn deploy -DskipTests'
+                    sh '''
+                        mvn deploy -DskipTests \
+                        -Drepository.username=admin -Drepository.password=Allah123.A. \
+                        -DaltDeploymentRepository=nexus::default::http://192.168.33.10:8081/repository/maven-snapshots/
+                    '''
                 }
             }
 
@@ -71,14 +75,14 @@ pipeline {
                 }
             }
 
-            stage('Start Prometheus') {
+            stage(' Prometheus') {
                     steps {
                         script {
                             sh "docker start 879171b52c20"
                         }
                     }
                 }
-            stage('Start Grafana') {
+            stage(' Grafana') {
                     steps {
                         script {
                             sh "docker start b94e81e71e2a"
