@@ -62,6 +62,15 @@ pipeline {
                     sh 'docker compose -f docker-compose.yml up -d'
                 }
             }
+
+            stage('Start Grafana') {
+                 steps {
+                      sshagent(['vagrant-ssh']) {
+
+                      sh "ssh -p 2222 -o StrictHostKeyChecking=no vagrant@127.0.0.1 'docker start grafana'"
+                            }
+                 }
+            }
     }
 }
 
