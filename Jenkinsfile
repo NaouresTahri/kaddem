@@ -25,6 +25,12 @@ pipeline {
                 }
             }
 
+            stage('JaCoCo') {
+                 steps {
+                      sh 'mvn jacoco:report'
+                 }
+            }
+
             stage('Maven Package') {
                 steps {
                     sh 'mvn clean package'
@@ -66,7 +72,6 @@ pipeline {
             stage('Start Grafana') {
                         steps {
                                 sshagent(['vagrant-ssh']) {
-                                    // Define the credentials directly within the stage
                                     sh """
                                         ssh -p 2222 -o StrictHostKeyChecking=no vagrant@127.0.0.1 '
                                         docker start grafana || docker run -d --name=grafana \
@@ -78,6 +83,20 @@ pipeline {
                                }
                         }
             }
+
+            post {
+                    always {
+                        // This will always run, regardless of the result of the pipeline
+                        jacoco(
+                            execPattern: '**/**.exec',
+                            classPattern: '**/classes',
+                            sourcePattern: '**/src/main/java',
+                            changeBuildStatus: true,
+                            minimumInstructionCoverage: '50'
+                        )
+                    }
+                }
+
     }
 }
 
