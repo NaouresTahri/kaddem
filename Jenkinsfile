@@ -96,9 +96,24 @@ pipeline {
                     }
                 }
 
+            /*stage('Start Ngrok') {
+                steps {
+                    script {
+                        // Start ngrok to expose Jenkins on port 8080, replace with your Jenkins port
+                        sh './ngrok http 8080 > /dev/null &'
+                        sh 'sleep 60' // Wait for ngrok to initialize
+                        // Fetch the ngrok tunnel URL
+                        NGROK_URL = sh(script: "curl --silent http://127.0.0.1:4040/api/tunnels | jq -r '.tunnels[0].public_url'", returnStdout: true).trim()
+                        echo "Ngrok URL: ${NGROK_URL}"
+                    }
+                }
+            }*/
+
     }
     post {
                         always {
+                             // Stop ngrok when the job is done
+                             //sh 'pkill ngrok'
                             // This will always run, regardless of the result of the pipeline
                             jacoco(
                                 execPattern: '**/**.exec',
