@@ -41,7 +41,7 @@ pipeline {
                     sh 'docker start sonarqube'
                     sh 'docker start 64c13a5735d7' // nexus
                     // Add commands to start other containers as needed
-                    sh 'sleep 120'
+                    sh 'sleep 180'
                 }
             }
 
@@ -55,7 +55,7 @@ pipeline {
 
             stage('Nexus') {
                 steps {
-                    sh "docker start 64c13a5735d7"
+                    //sh "docker start 64c13a5735d7"
                     sh "mvn deploy -DskipTests"
 
                 }
