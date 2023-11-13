@@ -55,7 +55,7 @@ pipeline {
 
             stage('Nexus') {
                 steps {
-                    //sh "docker start 64c13a5735d7"
+                    sh "docker start 64c13a5735d7"
                     sh "mvn deploy -DskipTests"
 
                 }
@@ -96,7 +96,7 @@ pipeline {
                     }
                 }
 
-            /*stage('Start Ngrok') {
+            stage('Start Ngrok') {
                 steps {
                     script {
                         // Start ngrok to expose Jenkins on port 8080, replace with your Jenkins port
@@ -107,13 +107,13 @@ pipeline {
                         echo "Ngrok URL: ${NGROK_URL}"
                     }
                 }
-            }*/
+            }
 
     }
     post {
                         always {
                              // Stop ngrok when the job is done
-                             //sh 'pkill ngrok'
+                             sh 'pkill ngrok'
                             // This will always run, regardless of the result of the pipeline
                             jacoco(
                                 execPattern: '**/**.exec',
