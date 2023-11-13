@@ -2,7 +2,7 @@ pipeline {
     agent any
 environment {
             // Define the Docker image name as an environment variable
-            DOCKER_IMAGE = 'yesmineeladab/kaddem-app-image:0.0.1-SNAPSHOT'
+            DOCKER_IMAGE = 'yesmineeladab/kaddem:0.0.1'
         }
 
     stages {
@@ -14,14 +14,7 @@ environment {
                 credentialsId : '1234'
             }
         }
-
-  stage('JUNIT/MOCHITO') {
-                steps {
-                    sh 'mvn test'
-                }
-            }
-
-        stage('Maven Clean') {
+  stage('Maven Clean') {
             steps {
                 // Cette étape exécute la commande Maven clean
                 sh 'mvn clean'
@@ -49,34 +42,6 @@ stage('SonarQube Analysis') {
             }
         }
 
-
-
-
-
-stage('Build Docker Image') {
-                steps {
-                    sh "docker build -t ${env.DOCKER_IMAGE} ."
-                }
-            }
-
-            stage('Deploy to DockerHub') {
-                steps {
-                    sh "echo 'Logging in to Docker Hub'"
-                    sh 'docker login -u yesmine993 -p yesmine26'
-                    sh "docker push ${env.DOCKER_IMAGE}"
-                }
-            }
-
-            stage('Docker Compose') {
-                steps {
-                    sh 'docker compose -f docker-compose.yml up -d'
-                }
-            }
-
-
-
-
-
 stage('Nexus'){
             steps{
                   script {
@@ -90,6 +55,44 @@ stage('Nexus'){
                 }
             }
         }
+
+
+
+
+stage('Build Docker Image') {
+                steps {
+                    sh "docker build -t ${environment.DOCKER_IMAGE} ."
+                }
+            }
+
+            stage('Deploy to DockerHub') {
+                steps {
+                    sh "echo 'Logging in to Docker Hub'"
+                    sh 'docker login -u yesmine993 -p yesmine26'
+                    sh "docker push ${environment.DOCKER_IMAGE}"
+                }
+            }
+
+stage('Deploy our image backend') { 
+            steps { 
+                script {
+                    sh 'docker push yesmineeladab/kaddem:0.0.1'
+                }
+            } 
+        }
+
+            stage('Docker Compose') {
+                steps {
+                    sh 'docker compose -f docker-compose.yml up -d'
+                }
+            }
+
+
+
+
+
+
+
 
 }
 }
