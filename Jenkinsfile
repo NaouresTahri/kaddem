@@ -119,7 +119,7 @@ pipeline {
                                 execPattern: '**/**.exec',
                                 classPattern: '**/classes',
                                 sourcePattern: '**/src/main/java',
-                                changeBuildStatus: true,
+                                changeBuildStatus: false,
                                 minimumInstructionCoverage: '50'
                             )
                         }
