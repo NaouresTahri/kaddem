@@ -36,20 +36,23 @@ pipeline {
                     sh 'mvn clean package'
                 }
             }
-            stage('Start Containers') {
+            stage('Start SONARQUBE CONTAINER') {
                 steps {
                     sh 'docker start sonarqube'
-                    sh 'docker start 64c13a5735d7' // nexus
-                    // Add commands to start other containers as needed
-                    sh 'sleep 60'
+
                 }
             }
-
+            stage('Start NEXUS CONTAINER') {
+                 steps {
+                     sh 'docker start 64c13a5735d7'
+                 }
+            }
 
             stage('SONARQUBE') {
                 steps {
                     //sh "docker start sonarqube"
                     sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=Allah123.A. -Dsonar.host.url=http://192.168.33.10:9000/"
+                    sh 'sleep 60'
                 }
             }
 
@@ -96,24 +99,20 @@ pipeline {
                     }
                 }
 
-            stage('Start Ngrok') {
-                steps {
-                    script {
-                        // Start ngrok to expose Jenkins on port 8080, replace with your Jenkins port
-                        sh './ngrok http 8080 > /dev/null &'
-                        sh 'sleep 60' // Wait for ngrok to initialize
-                        // Fetch the ngrok tunnel URL
-                        NGROK_URL = sh(script: "curl --silent http://127.0.0.1:4040/api/tunnels | jq -r '.tunnels[0].public_url'", returnStdout: true).trim()
-                        echo "Ngrok URL: ${NGROK_URL}"
+            stage('Verify Ngrok') {
+                    steps {
+                        script {
+                      // Check if ngrok's web interface is up by requesting its homepage
+                      sh "curl -o /dev/null -s -f http://192.168.33.10:4040"
+                      echo 'Ngrok is up and running!'
+                        }
                     }
-                }
             }
+
 
     }
     post {
                         always {
-                             // Stop ngrok when the job is done
-                             sh 'pkill ngrok'
                             // This will always run, regardless of the result of the pipeline
                             jacoco(
                                 execPattern: '**/**.exec',
