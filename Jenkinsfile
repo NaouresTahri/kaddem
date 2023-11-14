@@ -39,12 +39,13 @@ pipeline {
             stage('Start SONARQUBE CONTAINER') {
                 steps {
                     sh 'docker start sonarqube'
-
+                    sh 'sleep 120'
                 }
             }
             stage('Start NEXUS CONTAINER') {
                  steps {
                      sh 'docker start 64c13a5735d7'
+                     sh 'sleep 120'
                  }
             }
 
