@@ -53,7 +53,7 @@ pipeline {
                 steps {
                     //sh "docker start sonarqube"
                     sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=Allah123.A. -Dsonar.host.url=http://192.168.33.10:9000/"
-                    sh 'sleep 60'
+                    
                 }
             }
 
