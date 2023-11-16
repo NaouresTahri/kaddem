@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  # MySQL service
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: timesheet-devops-db
+    ports:
+      - "3306:3306"
+    networks:
+      - applicationnetwork
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  # Spring Boot service
+  springboot-app:
+    image: adam2000/backend:latest
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysql
+    networks:
+      - applicationnetwork
+
+  networks:
+  applicationnetwork:
+
+volumes:
+  mysql-data:
