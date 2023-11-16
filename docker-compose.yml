@@ -25,7 +25,7 @@ services:
     networks:
       - applicationnetwork
 
-  networks:
+networks:
   applicationnetwork:
 
 volumes:
