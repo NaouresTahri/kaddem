@@ -44,7 +44,7 @@ pipeline {
             }
             stage('Start NEXUS CONTAINER') {
                  steps {
-                     sh 'docker start 64c13a5735d7'
+                     sh 'docker start 37ab39ff105f'
                      sh 'sleep 120'
                  }
             }
