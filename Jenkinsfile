@@ -59,33 +59,6 @@ stage('Nexus'){
 
 
 
-stage('Build Docker Image') {
-                steps {
-                    sh "docker build -t ${environment.DOCKER_IMAGE} ."
-                }
-            }
-
-            stage('Deploy to DockerHub') {
-                steps {
-                    sh "echo 'Logging in to Docker Hub'"
-                    sh 'docker login -u yesmine993 -p yesmine26'
-                    sh "docker push ${environment.DOCKER_IMAGE}"
-                }
-            }
-
-stage('Deploy our image backend') { 
-            steps { 
-                script {
-                    sh 'docker push yesmineeladab/kaddem:0.0.1'
-                }
-            } 
-        }
-
-            stage('Docker Compose') {
-                steps {
-                    sh 'docker compose -f docker-compose.yml up -d'
-                }
-            }
 
 
 
