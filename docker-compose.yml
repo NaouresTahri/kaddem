@@ -2,7 +2,7 @@ version: '3'
 services:
   app:
     image: nederbg/kaddem:1.0
-
+    restart: unless-stopped
     ports:
       - "8089:8089"
     depends_on:
@@ -12,7 +12,7 @@ services:
 
   mysql:
     image: mysql
-
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: devops
