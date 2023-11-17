@@ -8,11 +8,11 @@ services:
     depends_on:
       - mysql
     volumes:
-      - app_data:/var/lib/mysql  -
+      - app_data:/var/lib/mysql
 
   mysql:
     image: mysql
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: devops
