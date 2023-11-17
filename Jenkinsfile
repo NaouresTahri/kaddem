@@ -120,7 +120,7 @@ pipeline {
                                 classPattern: '**/classes',
                                 sourcePattern: '**/src/main/java',
                                 changeBuildStatus: false,
-                                minimumInstructionCoverage: '0'
+                                //minimumInstructionCoverage: '0'
                             )
                         }
                     }
