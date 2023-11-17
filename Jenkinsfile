@@ -39,13 +39,13 @@ pipeline {
             stage('Start SONARQUBE CONTAINER') {
                 steps {
                     sh 'docker start sonarqube'
-                    sh 'sleep 120'
+                    sh 'sleep 60'
                 }
             }
             stage('Start NEXUS CONTAINER') {
                  steps {
                      sh 'docker start 37ab39ff105f'
-                     sh 'sleep 120'
+                     sh 'sleep 60'
                  }
             }
 
@@ -100,29 +100,10 @@ pipeline {
                     }
                 }
 
-            stage('Verify Ngrok') {
-                    steps {
-                        script {
-                      // Check if ngrok's web interface is up by requesting its homepage
-                      sh "curl -o /dev/null -s -f http://192.168.33.10:4040"
-                      echo 'Ngrok is up and running!'
-                        }
-                    }
-            }
+
 
 
     }
-    post {
-                        always {
-                            // This will always run, regardless of the result of the pipeline
-                            jacoco(
-                                execPattern: '**/**.exec',
-                                classPattern: '**/classes',
-                                sourcePattern: '**/src/main/java',
-                                changeBuildStatus: false,
-                                //minimumInstructionCoverage: '0'
-                            )
-                        }
-                    }
+
 }
 
