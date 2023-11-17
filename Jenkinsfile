@@ -36,19 +36,7 @@ pipeline {
                     sh 'mvn clean package'
                 }
             }
-            stage('Start SONARQUBE CONTAINER') {
-                steps {
-                    sh 'docker start sonarqube'
-                    sh 'sleep 60'
-                }
-            }
-            stage('Start NEXUS CONTAINER') {
-                 steps {
-                     sh 'docker start 37ab39ff105f'
-                     sh 'sleep 60'
-                 }
-            }
-
+         
             stage('SONARQUBE') {
                 steps {
                     //sh "docker start sonarqube"
